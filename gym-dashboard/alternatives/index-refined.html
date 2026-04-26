@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aris 每日訓練駕駛艙 — A・精煉版</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <style>
+    html, body {
+      background: #1a1814;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+// Gym Dashboard — Direction A: Refined Daily Cockpit / Source: Claude Design bundle variants/gym-refined.jsx / Converted to standalone HTML — 2026-04-26
+
+const GymRefined = () => {
+  return (
+    <div className="gym-r">
+      <style>{`
+        .gym-r {
+          --bg: #1a1814;
+          --panel: #25221d;
+          --panel-2: #2c2823;
+          --line: rgba(244,241,222,.08);
+          --line-2: rgba(244,241,222,.16);
+          --text: #f4f1de;
+          --muted: #a8a29e;
+          --dim: #6e6a64;
+          --orange: #e07a5f;
+          --green: #81b29a;
+          --warm: #f2cc8f;
+          --violet: #7c6ca8;
+          --blue: #7faadc;
+          background: var(--bg);
+          color: var(--text);
+          font-family: 'Inter', system-ui, sans-serif;
+          padding: 28px 32px 36px;
+          min-height: 100%;
+        }
+        .gym-r * { box-sizing: border-box; }
+
+        .gym-r .topbar {
+          display: flex; align-items: center; justify-content: space-between;
+          padding-bottom: 18px; border-bottom: 1px solid var(--line);
+          margin-bottom: 22px;
+        }
+        .gym-r .brand {
+          font-size: 12px; font-weight: 700; letter-spacing: .12em;
+          color: var(--orange); text-transform: uppercase;
+        }
+        .gym-r .brand-sub {
+          font-size: 11px; color: var(--muted); margin-top: 3px;
+          letter-spacing: .04em; text-transform: none;
+        }
+        .gym-r .nav {
+          display: flex; gap: 6px; padding: 4px;
+          background: rgba(244,241,222,.04);
+          border-radius: 10px; border: 1px solid var(--line);
+        }
+        .gym-r .nav a {
+          padding: 7px 14px; border-radius: 7px;
+          font-size: 12px; font-weight: 600;
+          color: var(--muted); text-decoration: none;
+          letter-spacing: .03em;
+        }
+        .gym-r .nav a.on {
+          background: var(--panel-2); color: var(--text);
+          box-shadow: 0 1px 0 rgba(255,255,255,.04);
+        }
+        .gym-r .topbar-meta {
+          display: flex; gap: 18px; font-size: 11px; color: var(--muted);
+          font-variant-numeric: tabular-nums;
+        }
+
+        /* TODAY HERO */
+        .gym-r .today {
+          background:
+            radial-gradient(ellipse at top right, rgba(224,122,95,.16), transparent 60%),
+            linear-gradient(135deg, var(--panel) 0%, #1f1c17 100%);
+          border: 1px solid var(--line-2);
+          border-radius: 22px;
+          padding: 32px 34px;
+          margin-bottom: 22px;
+          position: relative; overflow: hidden;
+        }
+        .gym-r .today-tag {
+          display: inline-flex; align-items: center; gap: 8px;
+          padding: 5px 11px; border-radius: 99px;
+          background: rgba(242,204,143,.12);
+          border: 1px solid rgba(242,204,143,.32);
+          color: #ffe2ad; font-size: 10px; font-weight: 700;
+          letter-spacing: .14em; text-transform: uppercase;
+        }
+        .gym-r .today-tag .dot {
+          width: 6px; height: 6px; border-radius: 99px; background: var(--warm);
+          box-shadow: 0 0 0 3px rgba(242,204,143,.18);
+        }
+        .gym-r .today-row {
+          display: grid; grid-template-columns: 1.6fr 1fr;
+          gap: 28px; align-items: end;
+          margin-top: 18px;
+        }
+        .gym-r .today-headline {
+          font-size: 56px; font-weight: 800; line-height: .98;
+          letter-spacing: -.035em;
+        }
+        .gym-r .today-headline em {
+          font-style: normal; color: var(--warm);
+        }
+        .gym-r .today-sub {
+          font-size: 15px; color: #ddd6c2; line-height: 1.65;
+          margin-top: 14px; max-width: 560px;
+        }
+        .gym-r .today-orders {
+          display: grid; gap: 10px;
+        }
+        .gym-r .order-card {
+          padding: 14px 16px;
+          border: 1px solid var(--line);
+          border-radius: 12px;
+          background: rgba(244,241,222,.03);
+          display: grid; grid-template-columns: 32px 1fr auto;
+          gap: 12px; align-items: center;
+        }
+        .gym-r .order-icon {
+          width: 32px; height: 32px; border-radius: 9px;
+          display: grid; place-items: center;
+          font-size: 14px; font-weight: 800;
+        }
+        .gym-r .order-icon.push { background: rgba(224,122,95,.16); color: var(--orange); }
+        .gym-r .order-icon.hold { background: rgba(242,204,143,.18); color: var(--warm); }
+        .gym-r .order-icon.recover { background: rgba(129,178,154,.18); color: var(--green); }
+        .gym-r .order-title {
+          font-size: 13px; font-weight: 700; letter-spacing: -.005em;
+        }
+        .gym-r .order-desc {
+          font-size: 11px; color: var(--muted); margin-top: 2px;
+        }
+        .gym-r .order-act {
+          font-size: 11px; color: var(--text); opacity: .55;
+        }
+        .gym-r .order-card.primary {
+          border-color: rgba(242,204,143,.45);
+          background: rgba(242,204,143,.06);
+        }
+
+        /* HERO STATS RAIL */
+        .gym-r .hero-rail {
+          display: grid; grid-template-columns: repeat(4, 1fr);
+          gap: 14px; margin-top: 26px;
+          padding-top: 22px;
+          border-top: 1px solid var(--line);
+          position: relative;
+        }
+        .gym-r .ring {
+          display: flex; align-items: center; gap: 14px;
+        }
+        .gym-r .ring-svg {
+          width: 56px; height: 56px; flex: 0 0 56px;
+        }
+        .gym-r .ring-label {
+          font-size: 10px; color: var(--muted); letter-spacing: .12em;
+          text-transform: uppercase; font-weight: 600;
+        }
+        .gym-r .ring-value {
+          font-size: 22px; font-weight: 800; letter-spacing: -.02em;
+          font-variant-numeric: tabular-nums;
+          margin-top: 3px;
+        }
+        .gym-r .ring-sub {
+          font-size: 11px; color: var(--muted); margin-top: 2px;
+        }
+
+        /* THREE BAYS */
+        .gym-r .bays {
+          display: grid; grid-template-columns: repeat(3, 1fr);
+          gap: 16px; margin-bottom: 22px;
+        }
+        .gym-r .bay {
+          background: var(--panel);
+          border: 1px solid var(--line-2);
+          border-radius: 18px;
+          padding: 22px 24px;
+          position: relative; overflow: hidden;
+        }
+        .gym-r .bay::before {
+          content: ''; position: absolute; top: 0; left: 0; right: 0;
+          height: 3px;
+        }
+        .gym-r .bay.training::before { background: var(--orange); }
+        .gym-r .bay.recovery::before { background: var(--violet); }
+        .gym-r .bay.body::before { background: var(--green); }
+        .gym-r .bay-head {
+          display: flex; align-items: center; justify-content: space-between;
+          margin-bottom: 14px;
+        }
+        .gym-r .bay-eyebrow {
+          display: flex; align-items: center; gap: 8px;
+          font-size: 10px; font-weight: 700; letter-spacing: .14em;
+          text-transform: uppercase;
+        }
+        .gym-r .bay-eyebrow .dot {
+          width: 8px; height: 8px; border-radius: 99px;
+        }
+        .gym-r .bay.training .dot, .gym-r .bay.training .bay-eyebrow { color: var(--orange); }
+        .gym-r .bay.recovery .dot, .gym-r .bay.recovery .bay-eyebrow { color: var(--violet); }
+        .gym-r .bay.body .dot, .gym-r .bay.body .bay-eyebrow { color: var(--green); }
+        .gym-r .bay.training .bay-eyebrow .dot { background: var(--orange); }
+        .gym-r .bay.recovery .bay-eyebrow .dot { background: var(--violet); }
+        .gym-r .bay.body .bay-eyebrow .dot { background: var(--green); }
+        .gym-r .bay-arrow { font-size: 14px; color: var(--muted); }
+        .gym-r .bay-title {
+          font-size: 22px; font-weight: 800; letter-spacing: -.025em;
+          margin-bottom: 4px;
+        }
+        .gym-r .bay-state {
+          font-size: 13px; color: #ddd6c2; line-height: 1.5;
+          margin-bottom: 16px;
+        }
+        .gym-r .bay-state em {
+          font-style: normal; font-weight: 700;
+          color: var(--text);
+        }
+        .gym-r .bay-mini {
+          display: grid; grid-template-columns: 1fr 1fr;
+          gap: 12px; margin-bottom: 14px;
+          padding: 12px 0;
+          border-top: 1px solid var(--line);
+          border-bottom: 1px solid var(--line);
+        }
+        .gym-r .bay-mini .k {
+          font-size: 9px; color: var(--dim); letter-spacing: .12em;
+          text-transform: uppercase;
+        }
+        .gym-r .bay-mini .v {
+          font-size: 16px; font-weight: 700; margin-top: 3px;
+          font-variant-numeric: tabular-nums; letter-spacing: -.01em;
+        }
+        .gym-r .bay-mini .v small {
+          font-size: 11px; color: var(--muted); font-weight: 500;
+          margin-left: 3px;
+        }
+        .gym-r .bay-actions {
+          display: grid; gap: 6px;
+        }
+        .gym-r .bay-action {
+          display: flex; align-items: center; gap: 10px;
+          padding: 9px 10px; border-radius: 8px;
+          font-size: 12px;
+          background: rgba(244,241,222,.025);
+          border: 1px solid var(--line);
+        }
+        .gym-r .bay-action .num {
+          font-size: 9px; color: var(--dim); letter-spacing: .04em;
+          width: 12px;
+        }
+        .gym-r .bay-action.warn { color: var(--warm); border-color: rgba(242,204,143,.32); background: rgba(242,204,143,.06); }
+
+        .gym-r .sparkline {
+          height: 36px; margin: 6px 0 12px;
+          display: flex; align-items: end; gap: 3px;
+        }
+        .gym-r .sparkline i {
+          flex: 1; border-radius: 2px 2px 0 0;
+          opacity: .85;
+        }
+
+        /* RISK QUEUE */
+        .gym-r .section { margin-bottom: 22px; }
+        .gym-r .section-head {
+          display: flex; align-items: baseline; justify-content: space-between;
+          margin-bottom: 12px;
+        }
+        .gym-r .section-title {
+          font-size: 13px; font-weight: 700; letter-spacing: .02em;
+          display: flex; align-items: baseline; gap: 8px;
+        }
+        .gym-r .section-title .count {
+          font-size: 11px; color: var(--muted); font-weight: 500;
+        }
+        .gym-r .section-meta { font-size: 11px; color: var(--dim); }
+
+        .gym-r .risks {
+          background: var(--panel); border: 1px solid var(--line-2);
+          border-radius: 16px; overflow: hidden;
+        }
+        .gym-r .risk-row {
+          display: grid;
+          grid-template-columns: 70px 1fr 220px 130px 24px;
+          gap: 14px; padding: 14px 18px;
+          border-top: 1px solid var(--line);
+          align-items: center;
+          font-size: 13px;
+        }
+        .gym-r .risk-row.head {
+          border-top: none;
+          background: rgba(244,241,222,.02);
+          font-size: 10px; color: var(--muted);
+          text-transform: uppercase; letter-spacing: .1em;
+          padding: 10px 18px;
+        }
+        .gym-r .pri {
+          display: inline-block;
+          padding: 4px 8px; border-radius: 6px;
+          font-size: 10px; font-weight: 800; letter-spacing: .06em;
+          text-align: center;
+        }
+        .gym-r .pri.hold { background: rgba(242,204,143,.16); color: var(--warm); }
+        .gym-r .pri.watch { background: rgba(127,170,220,.14); color: var(--blue); }
+        .gym-r .pri.act { background: rgba(224,122,95,.16); color: var(--orange); }
+        .gym-r .risk-title { font-weight: 600; font-size: 14px; margin-bottom: 3px; }
+        .gym-r .risk-desc { font-size: 11px; color: var(--muted); line-height: 1.5; }
+        .gym-r .risk-source { font-size: 11px; color: var(--blue); }
+        .gym-r .risk-next { font-size: 11px; color: #ddd6c2; }
+        .gym-r .risk-arrow { color: var(--muted); text-align: right; }
+
+        /* PULSE STREAM */
+        .gym-r .two-col {
+          display: grid; grid-template-columns: 1.2fr 1fr;
+          gap: 18px; margin-bottom: 22px;
+        }
+        .gym-r .pulse {
+          background: var(--panel); border: 1px solid var(--line-2);
+          border-radius: 16px; padding: 20px 22px;
+        }
+        .gym-r .pulse-grid {
+          display: grid; grid-template-columns: repeat(7, 1fr);
+          gap: 8px; margin-bottom: 14px;
+        }
+        .gym-r .pulse-cell {
+          aspect-ratio: 1;
+          border-radius: 8px;
+          display: flex; flex-direction: column;
+          align-items: center; justify-content: center;
+          background: rgba(244,241,222,.03);
+          border: 1px solid var(--line);
+          font-size: 9px;
+          color: var(--muted);
+        }
+        .gym-r .pulse-cell.push {
+          background: rgba(224,122,95,.18); border-color: rgba(224,122,95,.45);
+          color: var(--orange);
+        }
+        .gym-r .pulse-cell.pull {
+          background: rgba(129,178,154,.16); border-color: rgba(129,178,154,.4);
+          color: var(--green);
+        }
+        .gym-r .pulse-cell.legs {
+          background: rgba(242,204,143,.16); border-color: rgba(242,204,143,.4);
+          color: var(--warm);
+        }
+        .gym-r .pulse-cell.rest {
+          background: transparent;
+          color: var(--dim);
+        }
+        .gym-r .pulse-cell .day {
+          font-size: 9px; letter-spacing: .12em; text-transform: uppercase;
+          opacity: .8;
+        }
+        .gym-r .pulse-cell .lbl {
+          font-size: 11px; font-weight: 800; margin-top: 2px;
+        }
+        .gym-r .pulse-cell.today {
+          outline: 2px solid var(--text); outline-offset: 2px;
+        }
+        .gym-r .pulse-legend {
+          display: flex; gap: 16px; flex-wrap: wrap;
+          font-size: 11px; color: var(--muted); margin-top: 12px;
+        }
+        .gym-r .pulse-legend .sw {
+          display: inline-block; width: 8px; height: 8px; border-radius: 2px;
+          margin-right: 5px; vertical-align: middle;
+        }
+
+        /* DEEP LINKS */
+        .gym-r .deep-links {
+          background: var(--panel); border: 1px solid var(--line-2);
+          border-radius: 16px; padding: 6px 0;
+        }
+        .gym-r .deep-row {
+          display: grid; grid-template-columns: 32px 1fr auto auto;
+          gap: 14px; padding: 14px 18px;
+          align-items: center;
+          border-top: 1px solid var(--line);
+          font-size: 13px;
+        }
+        .gym-r .deep-row:first-child { border-top: none; }
+        .gym-r .deep-icon {
+          width: 30px; height: 30px; border-radius: 8px;
+          display: grid; place-items: center;
+          font-size: 13px; font-weight: 800;
+        }
+        .gym-r .deep-row.training .deep-icon { background: rgba(224,122,95,.18); color: var(--orange); }
+        .gym-r .deep-row.recovery .deep-icon { background: rgba(124,108,168,.22); color: var(--violet); }
+        .gym-r .deep-row.body .deep-icon { background: rgba(129,178,154,.18); color: var(--green); }
+        .gym-r .deep-name { font-size: 13px; font-weight: 700; }
+        .gym-r .deep-desc { font-size: 11px; color: var(--muted); margin-top: 2px; }
+        .gym-r .deep-meta { font-size: 11px; color: var(--muted); font-variant-numeric: tabular-nums; }
+        .gym-r .deep-arrow { color: var(--muted); }
+
+        /* FOOTER */
+        .gym-r .footer {
+          margin-top: 22px; padding-top: 18px;
+          border-top: 1px solid var(--line);
+          display: flex; justify-content: space-between;
+          gap: 18px; font-size: 11px; color: var(--muted);
+          flex-wrap: wrap;
+        }
+        .gym-r .footer code {
+          font-family: 'JetBrains Mono', ui-monospace, monospace;
+          color: var(--orange); font-size: 10px;
+        }
+      `}</style>
+
+      {/* TOPBAR */}
+      <div className="topbar">
+        <div>
+          <div className="brand">ARIS・每日訓練駕駛艙</div>
+          <div className="brand-sub">2026-04-24 已驗證・garmin・withings・ppl-log</div>
+        </div>
+        <div className="nav">
+          <a className="on">今日</a>
+          <a>訓練</a>
+          <a>恢復</a>
+          <a>身體</a>
+          <a>歷史</a>
+        </div>
+        <div className="topbar-meta">
+          <span>連續 14 天</span>
+          <span>最近同步・02:48</span>
+        </div>
+      </div>
+
+      {/* TODAY HERO */}
+      <div className="today">
+        <span className="today-tag"><span className="dot"></span>今日・保守令</span>
+        <div className="today-row">
+          <div>
+            <div className="today-headline">
+              今天不推。<br/>
+              <em>先恢復，別硬縞。</em>
+            </div>
+            <div className="today-sub">
+              Readiness 54・睡眠 6h22、深眠偏低・静息心率 ＋4bpm。
+              Garmin 說恢復不足，身體也同意。今天只做躍動度、散步、
+              餐食——高強度重訓延到明天的視窗。
+            </div>
+          </div>
+          <div className="today-orders">
+            <div className="order-card primary">
+              <div className="order-icon recover">↺</div>
+              <div>
+                <div className="order-title">恢復訓練・30 分鐘</div>
+                <div className="order-desc">Z2 散步・躍動度 flow・今日離 3L 水</div>
+              </div>
+              <div className="order-act">›</div>
+            </div>
+            <div className="order-card">
+              <div className="order-icon hold">⏸</div>
+              <div>
+                <div className="order-title">暫停重訓推上日</div>
+                <div className="order-desc">Bench ＋ OHP 順延到 04-25・今日只作輕量技術</div>
+              </div>
+              <div className="order-act">›</div>
+            </div>
+            <div className="order-card">
+              <div className="order-icon push">●</div>
+              <div>
+                <div className="order-title">修復型進食・2,450 kcal</div>
+                <div className="order-desc">蛋白 180g・午夜前上床優先</div>
+              </div>
+              <div className="order-act">›</div>
+            </div>
+          </div>
+        </div>
+
+        <div className="hero-rail">
+          {/* Readiness ring */}
+          <div className="ring">
+            <svg className="ring-svg" viewBox="0 0 56 56">
+              <circle cx="28" cy="28" r="22" fill="none" stroke="rgba(244,241,222,.08)" strokeWidth="6"/>
+              <circle cx="28" cy="28" r="22" fill="none" stroke="var(--warm)" strokeWidth="6"
+                strokeDasharray={`${0.54 * 138} 138`} strokeLinecap="round"
+                transform="rotate(-90 28 28)" />
+              <text x="28" y="32" textAnchor="middle" fontSize="14" fontWeight="800" fill="var(--text)">54</text>
+            </svg>
+            <div>
+              <div className="ring-label">准備度</div>
+              <div className="ring-value">54<small style={{fontSize:11,color:'var(--muted)',fontWeight:500}}> / 100</small></div>
+              <div className="ring-sub" style={{color:'var(--warm)'}}>近 7 天平均 ↓ 12</div>
+            </div>
+          </div>
+          {/* Recovery */}
+          <div className="ring">
+            <svg className="ring-svg" viewBox="0 0 56 56">
+              <circle cx="28" cy="28" r="22" fill="none" stroke="rgba(244,241,222,.08)" strokeWidth="6"/>
+              <circle cx="28" cy="28" r="22" fill="none" stroke="var(--violet)" strokeWidth="6"
+                strokeDasharray={`${0.62 * 138} 138`} strokeLinecap="round"
+                transform="rotate(-90 28 28)" />
+              <text x="28" y="32" textAnchor="middle" fontSize="14" fontWeight="800" fill="var(--text)">62</text>
+            </svg>
+            <div>
+              <div className="ring-label">恢復</div>
+              <div className="ring-value">62<small style={{fontSize:11,color:'var(--muted)',fontWeight:500}}> / 100</small></div>
+              <div className="ring-sub" style={{color:'var(--violet)'}}>HRV 48・深眠偏低</div>
+            </div>
+          </div>
+          {/* Training load */}
+          <div className="ring">
+            <svg className="ring-svg" viewBox="0 0 56 56">
+              <circle cx="28" cy="28" r="22" fill="none" stroke="rgba(244,241,222,.08)" strokeWidth="6"/>
+              <circle cx="28" cy="28" r="22" fill="none" stroke="var(--orange)" strokeWidth="6"
+                strokeDasharray={`${0.78 * 138} 138`} strokeLinecap="round"
+                transform="rotate(-90 28 28)" />
+              <text x="28" y="32" textAnchor="middle" fontSize="11" fontWeight="800" fill="var(--text)">78%</text>
+            </svg>
+            <div>
+              <div className="ring-label">7d load</div>
+              <div className="ring-value">17.4<small> sets/d</small></div>
+              <div className="ring-sub" style={{color:'var(--orange)'}}>+22% vs 28d · upper-heavy</div>
+            </div>
+          </div>
+          {/* Body */}
+          <div className="ring">
+            <svg className="ring-svg" viewBox="0 0 56 56">
+              <circle cx="28" cy="28" r="22" fill="none" stroke="rgba(244,241,222,.08)" strokeWidth="6"/>
+              <circle cx="28" cy="28" r="22" fill="none" stroke="var(--green)" strokeWidth="6"
+                strokeDasharray={`${0.86 * 138} 138`} strokeLinecap="round"
+                transform="rotate(-90 28 28)" />
+              <text x="28" y="32" textAnchor="middle" fontSize="11" fontWeight="800" fill="var(--text)">86%</text>
+            </svg>
+            <div>
+              <div className="ring-label">身體趨勢</div>
+              <div className="ring-value">73.2<small> kg</small></div>
+              <div className="ring-sub" style={{color:'var(--green)'}}>BF 16.4%・近 30 天 ↓ 0.6</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* THREE BAYS */}
+      <div className="bays">
+        {/* TRAINING */}
+        <div className="bay training">
+          <div className="bay-head">
+            <span className="bay-eyebrow"><span className="dot"></span>訓練艙</span>
+            <span className="bay-arrow">↗</span>
+          </div>
+          <div className="bay-title">推上壓力在上升</div>
+          <div className="bay-state">
+            7 天訓練量<em> push +22%</em>、pull +6%、legs −18%。
+            趨勢該 deload bench split，或輪一週腿周。
+          </div>
+          <div className="sparkline">
+            {[14,18,22,16,24,28,17].map((h,i)=>(
+              <i key={i} style={{height:h*1.4+'px', background:'var(--orange)'}}/>
+            ))}
+          </div>
+          <div className="bay-mini">
+            <div><div className="k">7d sets</div><div className="v">122<small>組</small></div></div>
+            <div><div className="k">PPL 比例</div><div className="v">52/30/18<small>%</small></div></div>
+          </div>
+          <div className="bay-actions">
+            <div className="bay-action warn"><span className="num">·</span>排一週「腿部優先」訓練週</div>
+            <div className="bay-action"><span className="num">·</span>進入訓練艙 →</div>
+          </div>
+        </div>
+
+        {/* RECOVERY */}
+        <div className="bay recovery">
+          <div className="bay-head">
+            <span className="bay-eyebrow"><span className="dot"></span>恢復艙</span>
+            <span className="bay-arrow">↗</span>
+          </div>
+          <div className="bay-title">睡眠是瓶頸</div>
+          <div className="bay-state">
+            昨晚 6h22・深眠<em> 0h48</em>（目標 1h20＋）。
+            HRV 48ms・静息心率 <em>＋4bpm</em>。連續三晚睡不足。
+          </div>
+          <div className="sparkline">
+            {[7.4,6.8,7.1,6.0,5.9,6.4,6.3].map((h,i)=>(
+              <i key={i} style={{height:h*5+'px', background:'var(--violet)'}}/>
+            ))}
+          </div>
+          <div className="bay-mini">
+            <div><div className="k">7d 睡眠</div><div className="v">6h36<small>平均</small></div></div>
+            <div><div className="k">HRV 趨勢</div><div className="v">48<small>ms ↓6</small></div></div>
+          </div>
+          <div className="bay-actions">
+            <div className="bay-action warn"><span className="num">·</span>今晚 23:00 熟灯</div>
+            <div className="bay-action"><span className="num">·</span>進入恢復艙 →</div>
+          </div>
+        </div>
+
+        {/* BODY */}
+        <div className="bay body">
+          <div className="bay-head">
+            <span className="bay-eyebrow"><span className="dot"></span>身體艙</span>
+            <span className="bay-arrow">↗</span>
+          </div>
+          <div className="bay-title">身體組成穩住</div>
+          <div className="bay-state">
+            73.2kg・BF <em>16.4%</em>・SM 35.1kg。
+            緩推 recomp 上軸道——脂肪近 30 天 ↓ 0.6kg、肌肉保住。
+          </div>
+          <div className="sparkline">
+            {[74.1,73.9,73.8,73.6,73.5,73.3,73.2].map((h,i)=>(
+              <i key={i} style={{height:(h-72)*30+'px', background:'var(--green)'}}/>
+            ))}
+          </div>
+          <div className="bay-mini">
+            <div><div className="k">肌肉量</div><div className="v">61.2<small>kg</small></div></div>
+            <div><div className="k">BMR</div><div className="v">1,612<small>kcal</small></div></div>
+          </div>
+          <div className="bay-actions">
+            <div className="bay-action"><span className="num">·</span>今日蛋白不低於 180g</div>
+            <div className="bay-action"><span className="num">·</span>進入身體艙 →</div>
+          </div>
+        </div>
+      </div>
+
+      {/* RISK QUEUE */}
+      <div className="section">
+        <div className="section-head">
+          <div className="section-title">風險佇列 <span className="count">3 項開放・可能毀了這週的事</span></div>
+          <div className="section-meta">優先・信號・下一步</div>
+        </div>
+        <div className="risks">
+          <div className="risk-row head">
+            <div>PRI</div><div>風險</div><div>來源</div><div>下一步</div><div></div>
+          </div>
+          <div className="risk-row">
+            <div><span className="pri hold">保守</span></div>
+            <div>
+              <div className="risk-title">恢復不足・3 夜下滑</div>
+              <div className="risk-desc">最近 4 夜裡有 3 夜深眠不足 1 小時。今天硬推強度只會加重這個赤字。</div>
+            </div>
+            <div className="risk-source">garminセreadiness ↓12</div>
+            <div className="risk-next">lights-out 23:00</div>
+            <div className="risk-arrow">›</div>
+          </div>
+          <div className="risk-row">
+            <div><span className="pri act">行動</span></div>
+            <div>
+              <div className="risk-title">推：腿失衡擴大</div>
+              <div className="risk-desc">7 天訓練量push 佔 52%、legs 佔 18%。上週五已記錄膍蓋追蹤偏移。</div>
+            </div>
+            <div className="risk-source">ppl-log・MEV 跳變</div>
+            <div className="risk-next">腿部優先週</div>
+            <div className="risk-arrow">›</div>
+          </div>
+          <div className="risk-row">
+            <div><span className="pri watch">觀察</span></div>
+            <div>
+              <div className="risk-title">静息心率上漂・較基線 ＋4bpm</div>
+              <div className="risk-desc">常是感冒或恢復不足的前兆。再持續 2 天就類為預警。</div>
+            </div>
+            <div className="risk-source">garmin・7d 趨勢</div>
+            <div className="risk-next">recheck 04-26</div>
+            <div className="risk-arrow">›</div>
+          </div>
+        </div>
+      </div>
+
+      {/* PULSE + DEEP LINKS */}
+      <div className="two-col">
+        <div className="pulse">
+          <div className="section-head" style={{margin: 0, marginBottom: 14}}>
+            <div className="section-title">訓練脈搏 <span className="count">近 14 天・push ／ pull ／ legs ／ rest</span></div>
+            <div className="section-meta">今日 高亮</div>
+          </div>
+          <div className="pulse-grid">
+            <div className="pulse-cell push"><div className="day">M</div><div className="lbl">P</div></div>
+            <div className="pulse-cell pull"><div className="day">T</div><div className="lbl">P</div></div>
+            <div className="pulse-cell legs"><div className="day">W</div><div className="lbl">L</div></div>
+            <div className="pulse-cell rest"><div className="day">T</div><div className="lbl">·</div></div>
+            <div className="pulse-cell push"><div className="day">F</div><div className="lbl">P</div></div>
+            <div className="pulse-cell pull"><div className="day">S</div><div className="lbl">P</div></div>
+            <div className="pulse-cell rest"><div className="day">S</div><div className="lbl">·</div></div>
+            <div className="pulse-cell push"><div className="day">M</div><div className="lbl">P</div></div>
+            <div className="pulse-cell push"><div className="day">T</div><div className="lbl">P</div></div>
+            <div className="pulse-cell pull"><div className="day">W</div><div className="lbl">P</div></div>
+            <div className="pulse-cell rest"><div className="day">T</div><div className="lbl">·</div></div>
+            <div className="pulse-cell push"><div className="day">F</div><div className="lbl">P</div></div>
+            <div className="pulse-cell legs"><div className="day">S</div><div className="lbl">L</div></div>
+            <div className="pulse-cell rest today"><div className="day">S</div><div className="lbl">·</div></div>
+          </div>
+          <div className="pulse-legend">
+            <span><span className="sw" style={{background:'rgba(224,122,95,.5)'}}></span>Push</span>
+            <span><span className="sw" style={{background:'rgba(129,178,154,.5)'}}></span>Pull</span>
+            <span><span className="sw" style={{background:'rgba(242,204,143,.5)'}}></span>Legs</span>
+            <span><span className="sw" style={{background:'rgba(244,241,222,.1)'}}></span>Rest</span>
+          </div>
+        </div>
+
+        <div className="deep-links">
+          <div className="section-head" style={{margin: 0, padding: '14px 18px 6px'}}>
+            <div className="section-title">深入訓練艙</div>
+            <div className="section-meta">進入某個艙</div>
+          </div>
+          <div className="deep-row training">
+            <div className="deep-icon">T</div>
+            <div>
+              <div className="deep-name">訓練艙 → PPL log ＋ MEV</div>
+              <div className="deep-desc">7 天 122 組・push 52%・pull 30%・legs 18%</div>
+            </div>
+            <div className="deep-meta">最新更新<br/>2026-04-23</div>
+            <div className="deep-arrow">›</div>
+          </div>
+          <div className="deep-row recovery">
+            <div className="deep-icon">R</div>
+            <div>
+              <div className="deep-name">恢復艙 → 睡眠 ＋ HRV</div>
+              <div className="deep-desc">平均 6h36・HRV 48ms・階段下滑</div>
+            </div>
+            <div className="deep-meta">最近同步<br/>02:48</div>
+            <div className="deep-arrow">›</div>
+          </div>
+          <div className="deep-row body">
+            <div className="deep-icon">B</div>
+            <div>
+              <div className="deep-name">身體艙 → 組成 ＋ 營養</div>
+              <div className="deep-desc">73.2kg・BF 16.4%・肌肉 61.2kg・BMR 1,612</div>
+            </div>
+            <div className="deep-meta">最近量重<br/>04-24 06:32</div>
+            <div className="deep-arrow">›</div>
+          </div>
+        </div>
+      </div>
+
+      <div className="footer">
+        <div>
+          <code>data · garmin connect · withings body+ · ppl-log.csv</code>
+        </div>
+        <div>
+          <code>generated 2026-04-24 06:50 · cockpit v2026.04</code>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+ReactDOM.createRoot(document.getElementById('root')).render(<GymRefined />);
+  </script>
+</body>
+</html>

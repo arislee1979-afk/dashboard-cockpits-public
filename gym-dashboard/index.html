@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aris Daily Training Cockpit — B・Editorial Cover</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <style>
+    html, body {
+      background: #f4f1de;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+// Gym Dashboard — Direction B: Bold Daily Command Cockpit (English)
+// Source: Claude Design bundle variants/gym-bold.jsx
+// Converted to standalone HTML + EN localisation — 2026-04-26
+
+const GymBold = () => {
+  return (
+    <div className="gym-b">
+      <style>{`
+        .gym-b {
+          --bg: #f4f1de;
+          --bg-2: #ede8d2;
+          --ink: #1a1814;
+          --ink-2: #3a342c;
+          --line: rgba(26,24,20,.10);
+          --line-2: rgba(26,24,20,.22);
+          --muted: #6e6a64;
+          --orange: #d96642;
+          --green: #5d9079;
+          --warm: #e8b35a;
+          --violet: #6b5d9c;
+          --blue: #5e89bf;
+          background: var(--bg);
+          color: var(--ink);
+          font-family: 'Inter', system-ui, sans-serif;
+          padding: 0; margin: 0;
+          min-height: 100%;
+        }
+        .gym-b * { box-sizing: border-box; }
+        .gym-b .serif { font-family: 'Inter', serif; font-feature-settings: 'ss01'; }
+
+        /* MASTHEAD */
+        .gym-b .mast {
+          padding: 18px 36px;
+          border-bottom: 2px solid var(--ink);
+          display: grid; grid-template-columns: 1fr auto 1fr;
+          align-items: center; gap: 24px;
+        }
+        .gym-b .mast-l, .gym-b .mast-r {
+          font-size: 11px; letter-spacing: .14em;
+          text-transform: uppercase; color: var(--muted);
+          font-weight: 600;
+        }
+        .gym-b .mast-r { text-align: right; }
+        .gym-b .mast-title {
+          font-size: 24px; font-weight: 900; letter-spacing: -.02em;
+          text-align: center;
+        }
+        .gym-b .mast-title b { color: var(--orange); }
+
+        /* COVER */
+        .gym-b .cover {
+          padding: 36px 36px 28px;
+          display: grid; grid-template-columns: 1.4fr 1fr;
+          gap: 36px;
+          border-bottom: 1px solid var(--ink);
+          position: relative;
+          background:
+            radial-gradient(ellipse at 90% 0%, rgba(217,102,66,.12), transparent 50%),
+            var(--bg);
+        }
+        .gym-b .cover-tag {
+          display: flex; align-items: center; gap: 10px;
+          font-size: 12px; font-weight: 800; letter-spacing: .18em;
+          text-transform: uppercase;
+          color: var(--orange);
+          margin-bottom: 16px;
+        }
+        .gym-b .cover-tag::before {
+          content: ''; width: 32px; height: 2px; background: var(--orange);
+        }
+        .gym-b .cover-headline {
+          font-size: 88px; font-weight: 900;
+          line-height: .92; letter-spacing: -.045em;
+          margin: 0 0 16px; color: var(--ink);
+        }
+        .gym-b .cover-headline em {
+          font-style: italic; font-weight: 800; color: var(--orange);
+          font-family: 'Inter', serif;
+        }
+        .gym-b .cover-deck {
+          font-size: 17px; line-height: 1.55; color: var(--ink-2);
+          max-width: 580px;
+          font-weight: 500;
+          margin-bottom: 20px;
+        }
+        .gym-b .cover-byline {
+          font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
+          color: var(--muted); font-weight: 600;
+          padding-top: 18px; border-top: 1px solid var(--line-2);
+          display: flex; gap: 24px; flex-wrap: wrap;
+        }
+        .gym-b .cover-byline b { color: var(--ink); }
+
+        /* BIG GAUGES (right column) */
+        .gym-b .gauges {
+          display: grid; gap: 14px;
+          align-self: start;
+        }
+        .gym-b .gauge {
+          padding: 18px 20px;
+          border: 1.5px solid var(--ink);
+          border-radius: 14px;
+          background: var(--bg);
+          display: grid; grid-template-columns: 80px 1fr;
+          gap: 18px; align-items: center;
+        }
+        .gym-b .gauge.hero {
+          background: var(--ink); color: var(--bg);
+          border-color: var(--ink);
+        }
+        .gym-b .gauge-svg { width: 80px; height: 80px; }
+        .gym-b .gauge-num {
+          font-size: 24px; font-weight: 800;
+          fill: var(--ink); text-anchor: middle;
+        }
+        .gym-b .gauge.hero .gauge-num { fill: var(--bg); }
+        .gym-b .gauge-num small { font-size: 11px; }
+        .gym-b .g-label {
+          font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
+          color: var(--muted); font-weight: 700;
+        }
+        .gym-b .gauge.hero .g-label { color: rgba(244,241,222,.6); }
+        .gym-b .g-value {
+          font-size: 32px; font-weight: 900; letter-spacing: -.03em;
+          margin-top: 6px;
+          font-variant-numeric: tabular-nums;
+          line-height: 1;
+        }
+        .gym-b .g-value small { font-size: 14px; color: var(--muted); font-weight: 600; }
+        .gym-b .gauge.hero .g-value small { color: rgba(244,241,222,.5); }
+        .gym-b .g-delta {
+          margin-top: 8px;
+          font-size: 11px; font-weight: 700;
+          letter-spacing: .04em;
+        }
+        .gym-b .g-delta.bad { color: var(--orange); }
+        .gym-b .g-delta.good { color: var(--green); }
+        .gym-b .gauge.hero .g-delta.bad { color: var(--warm); }
+
+        /* ORDERS — Mission card strip */
+        .gym-b .orders {
+          padding: 28px 36px;
+          background: var(--ink);
+          color: var(--bg);
+        }
+        .gym-b .orders-head {
+          display: flex; justify-content: space-between; align-items: baseline;
+          margin-bottom: 18px;
+        }
+        .gym-b .orders-h {
+          font-size: 13px; font-weight: 800; letter-spacing: .18em;
+          text-transform: uppercase; color: var(--warm);
+        }
+        .gym-b .orders-meta {
+          font-size: 11px; letter-spacing: .12em;
+          text-transform: uppercase; color: rgba(244,241,222,.55);
+        }
+        .gym-b .order-grid {
+          display: grid; grid-template-columns: repeat(3, 1fr);
+          gap: 14px;
+        }
+        .gym-b .o-card {
+          background: rgba(244,241,222,.04);
+          border: 1px solid rgba(244,241,222,.16);
+          border-radius: 12px;
+          padding: 18px 20px;
+          position: relative;
+          display: flex; flex-direction: column; gap: 10px;
+        }
+        .gym-b .o-card.primary {
+          background: var(--warm); color: var(--ink);
+          border-color: var(--warm);
+        }
+        .gym-b .o-num {
+          font-size: 11px; font-weight: 800; letter-spacing: .14em;
+          color: rgba(244,241,222,.5);
+        }
+        .gym-b .o-card.primary .o-num { color: rgba(26,24,20,.5); }
+        .gym-b .o-title {
+          font-size: 20px; font-weight: 900; line-height: 1.05;
+          letter-spacing: -.02em;
+        }
+        .gym-b .o-desc {
+          font-size: 13px; line-height: 1.55;
+          color: rgba(244,241,222,.75);
+        }
+        .gym-b .o-card.primary .o-desc { color: rgba(26,24,20,.72); }
+        .gym-b .o-foot {
+          margin-top: auto; padding-top: 12px;
+          border-top: 1px solid rgba(244,241,222,.12);
+          font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
+          color: rgba(244,241,222,.55); font-weight: 600;
+          display: flex; justify-content: space-between;
+        }
+        .gym-b .o-card.primary .o-foot {
+          border-color: rgba(26,24,20,.18);
+          color: rgba(26,24,20,.55);
+        }
+
+        /* THREE BAYS — long-form cards */
+        .gym-b .bays {
+          display: grid; grid-template-columns: repeat(3, 1fr);
+          gap: 0;
+          border-bottom: 1px solid var(--ink);
+        }
+        .gym-b .bay {
+          padding: 30px 32px;
+          border-right: 1px solid var(--ink);
+          background: var(--bg);
+          display: flex; flex-direction: column;
+        }
+        .gym-b .bay:last-child { border-right: none; }
+        .gym-b .bay-num {
+          font-size: 11px; letter-spacing: .18em; text-transform: uppercase;
+          color: var(--muted); font-weight: 700;
+          display: flex; gap: 12px; align-items: center;
+          margin-bottom: 14px;
+        }
+        .gym-b .bay-num .swatch {
+          width: 12px; height: 12px; border-radius: 99px;
+        }
+        .gym-b .bay.training .bay-num .swatch { background: var(--orange); }
+        .gym-b .bay.recovery .bay-num .swatch { background: var(--violet); }
+        .gym-b .bay.body .bay-num .swatch { background: var(--green); }
+        .gym-b .bay-h {
+          font-size: 32px; font-weight: 900; letter-spacing: -.025em;
+          line-height: 1.05;
+          margin-bottom: 10px;
+        }
+        .gym-b .bay-h em { font-style: italic; font-family: 'Inter', serif; }
+        .gym-b .bay.training .bay-h em { color: var(--orange); }
+        .gym-b .bay.recovery .bay-h em { color: var(--violet); }
+        .gym-b .bay.body .bay-h em { color: var(--green); }
+        .gym-b .bay-deck {
+          font-size: 13.5px; line-height: 1.6; color: var(--ink-2);
+          margin-bottom: 18px;
+        }
+
+        .gym-b .bay-chart {
+          height: 80px; margin-bottom: 16px;
+          display: flex; align-items: end; gap: 4px;
+        }
+        .gym-b .bay-chart i {
+          flex: 1; border-radius: 3px 3px 0 0;
+        }
+        .gym-b .bay.training .bay-chart i { background: var(--orange); }
+        .gym-b .bay.recovery .bay-chart i { background: var(--violet); }
+        .gym-b .bay.body .bay-chart i { background: var(--green); }
+        .gym-b .bay-chart i.dim { opacity: .35; }
+
+        .gym-b .bay-stats {
+          display: grid; grid-template-columns: 1fr 1fr 1fr;
+          gap: 12px; padding: 14px 0;
+          border-top: 1px solid var(--line-2);
+          border-bottom: 1px solid var(--line-2);
+          margin-bottom: 16px;
+        }
+        .gym-b .bs-k { font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); font-weight: 700; }
+        .gym-b .bs-v { font-size: 18px; font-weight: 800; margin-top: 4px; font-variant-numeric: tabular-nums; letter-spacing: -.02em; }
+        .gym-b .bs-v small { font-size: 11px; color: var(--muted); font-weight: 500; }
+
+        .gym-b .bay-cta {
+          margin-top: auto;
+          display: flex; align-items: center; gap: 12px;
+          padding: 12px 14px;
+          border-radius: 10px;
+          background: var(--ink);
+          color: var(--bg);
+          font-size: 12px; font-weight: 700; letter-spacing: .04em;
+          text-decoration: none;
+        }
+        .gym-b .bay-cta .arrow { margin-left: auto; }
+        .gym-b .bay-cta-sub {
+          color: rgba(244,241,222,.55); font-weight: 500;
+          letter-spacing: 0;
+        }
+
+        /* RISK + PULSE BAND */
+        .gym-b .band {
+          display: grid; grid-template-columns: 1fr 1fr;
+          gap: 0;
+          border-bottom: 1px solid var(--ink);
+        }
+        .gym-b .band > div {
+          padding: 30px 36px;
+        }
+        .gym-b .band > div:first-child {
+          border-right: 1px solid var(--ink);
+          background: var(--bg-2);
+        }
+        .gym-b .band-h {
+          font-size: 11px; letter-spacing: .18em; text-transform: uppercase;
+          color: var(--muted); font-weight: 700;
+          margin-bottom: 16px;
+          display: flex; justify-content: space-between;
+        }
+
+        /* RISKS — editorial list */
+        .gym-b .risk-list { display: flex; flex-direction: column; gap: 0; }
+        .gym-b .risk-item {
+          padding: 18px 0;
+          border-bottom: 1px solid var(--line-2);
+          display: grid; grid-template-columns: 60px 1fr auto;
+          gap: 18px; align-items: start;
+        }
+        .gym-b .risk-item:last-child { border-bottom: none; }
+        .gym-b .risk-num {
+          font-size: 32px; font-weight: 900; letter-spacing: -.04em;
+          line-height: .9;
+          font-family: 'Inter', serif; font-style: italic;
+        }
+        .gym-b .risk-num.hold { color: var(--warm); }
+        .gym-b .risk-num.act { color: var(--orange); }
+        .gym-b .risk-num.watch { color: var(--blue); }
+        .gym-b .risk-h {
+          font-size: 18px; font-weight: 800; line-height: 1.2;
+          letter-spacing: -.015em;
+          margin-bottom: 6px;
+        }
+        .gym-b .risk-d {
+          font-size: 13px; color: var(--ink-2); line-height: 1.55;
+        }
+        .gym-b .risk-meta {
+          font-size: 10px; letter-spacing: .14em; text-transform: uppercase;
+          color: var(--muted); font-weight: 700;
+          text-align: right;
+          line-height: 1.6;
+        }
+        .gym-b .risk-meta b { color: var(--ink); display: block; font-size: 12px; }
+
+        /* PULSE — kinetic 28d strip */
+        .gym-b .pulse-28 {
+          display: grid; grid-template-columns: repeat(28, 1fr);
+          gap: 4px; margin-bottom: 10px;
+        }
+        .gym-b .pc {
+          aspect-ratio: 1; border-radius: 4px;
+          background: rgba(26,24,20,.06);
+        }
+        .gym-b .pc.push { background: var(--orange); }
+        .gym-b .pc.pull { background: var(--green); }
+        .gym-b .pc.legs { background: var(--warm); }
+        .gym-b .pc.rest { background: rgba(26,24,20,.08); }
+        .gym-b .pc.today {
+          outline: 2px solid var(--ink);
+          outline-offset: 2px;
+        }
+        .gym-b .pulse-axis {
+          display: flex; justify-content: space-between;
+          font-size: 10px; color: var(--muted);
+          letter-spacing: .12em;
+          margin: 6px 2px 16px;
+        }
+        .gym-b .pulse-legend {
+          display: flex; gap: 18px; flex-wrap: wrap;
+          font-size: 11px; color: var(--ink-2);
+          padding-top: 14px; border-top: 1px solid var(--line-2);
+        }
+        .gym-b .pulse-legend .sw {
+          display: inline-block; width: 10px; height: 10px; border-radius: 2px;
+          margin-right: 6px; vertical-align: -1px;
+        }
+        .gym-b .pulse-totals {
+          display: grid; grid-template-columns: repeat(4, 1fr);
+          gap: 14px; margin-top: 14px;
+          padding-top: 14px;
+          border-top: 1px solid var(--line-2);
+        }
+        .gym-b .pulse-totals .pk { font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); font-weight: 700; }
+        .gym-b .pulse-totals .pv {
+          font-size: 22px; font-weight: 900; letter-spacing: -.02em;
+          margin-top: 4px; font-variant-numeric: tabular-nums;
+        }
+
+        /* COLOPHON */
+        .gym-b .colophon {
+          padding: 22px 36px;
+          display: flex; justify-content: space-between;
+          gap: 24px;
+          font-size: 11px; letter-spacing: .12em; text-transform: uppercase;
+          color: var(--muted);
+          font-weight: 600;
+          flex-wrap: wrap;
+        }
+        .gym-b .colophon b { color: var(--ink); }
+      `}</style>
+
+      {/* MASTHEAD */}
+      <div className="mast">
+        <div className="mast-l">2026・04・24・FRI</div>
+        <div className="mast-title">ARIS・DAILY <b>TRAINING</b> COCKPIT</div>
+        <div className="mast-r">CYCLE 17 / DAY 287・14-DAY STREAK</div>
+      </div>
+
+      {/* COVER */}
+      <div className="cover">
+        <div>
+          <div className="cover-tag">Today's order・Hold</div>
+          <h1 className="cover-headline serif">
+            Recover first.<br/>
+            Don't <em>force it</em>.
+          </h1>
+          <p className="cover-deck">
+            Readiness at <b style={{color:'var(--ink)'}}>54</b>, 12 points
+            below the 7-day average. Last night: 6h22 sleep, 0h48 deep;
+            resting HR up 4 bpm. Your body is asking for a quiet day —
+            give it one, and tomorrow's window opens wider.
+          </p>
+          <div className="cover-byline">
+            <span><b>HERMES</b>・on watch</span>
+            <span><b>GARMIN</b>・synced 02:48</span>
+            <span><b>WITHINGS</b>・weigh-in 06:32</span>
+            <span><b>VERIFIED</b>・2/2 ✓</span>
+          </div>
+        </div>
+
+        {/* GAUGES */}
+        <div className="gauges">
+          <div className="gauge hero">
+            <svg className="gauge-svg" viewBox="0 0 80 80">
+              <circle cx="40" cy="40" r="32" fill="none" stroke="rgba(244,241,222,.15)" strokeWidth="8"/>
+              <circle cx="40" cy="40" r="32" fill="none" stroke="var(--warm)" strokeWidth="8"
+                strokeDasharray={`${0.54*201} 201`} strokeLinecap="round"
+                transform="rotate(-90 40 40)"/>
+              <text x="40" y="45" textAnchor="middle" fontSize="20" fontWeight="900" fill="var(--bg)">54</text>
+            </svg>
+            <div>
+              <div className="g-label">Readiness</div>
+              <div className="g-value serif">54<small> / 100</small></div>
+              <div className="g-delta bad">↓ 12 (7-day avg)・under-recovered</div>
+            </div>
+          </div>
+          <div className="gauge">
+            <svg className="gauge-svg" viewBox="0 0 80 80">
+              <circle cx="40" cy="40" r="32" fill="none" stroke="rgba(26,24,20,.08)" strokeWidth="8"/>
+              <circle cx="40" cy="40" r="32" fill="none" stroke="var(--violet)" strokeWidth="8"
+                strokeDasharray={`${0.62*201} 201`} strokeLinecap="round"
+                transform="rotate(-90 40 40)"/>
+              <text x="40" y="45" textAnchor="middle" fontSize="20" fontWeight="900" fill="var(--ink)">62</text>
+            </svg>
+            <div>
+              <div className="g-label">Recovery・Sleep + HRV</div>
+              <div className="g-value serif">6h22<small>・HRV 48</small></div>
+              <div className="g-delta bad">Deep 0h48・3 nights running low</div>
+            </div>
+          </div>
+          <div className="gauge">
+            <svg className="gauge-svg" viewBox="0 0 80 80">
+              <circle cx="40" cy="40" r="32" fill="none" stroke="rgba(26,24,20,.08)" strokeWidth="8"/>
+              <circle cx="40" cy="40" r="32" fill="none" stroke="var(--green)" strokeWidth="8"
+                strokeDasharray={`${0.86*201} 201`} strokeLinecap="round"
+                transform="rotate(-90 40 40)"/>
+              <text x="40" y="45" textAnchor="middle" fontSize="16" fontWeight="900" fill="var(--ink)">73.2</text>
+            </svg>
+            <div>
+              <div className="g-label">Body・Weight + Composition</div>
+              <div className="g-value serif">73.2<small> kg・BF 16.4%</small></div>
+              <div className="g-delta good">30-day ↓ 0.6kg・muscle held</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ORDERS BAR */}
+      <div className="orders">
+        <div className="orders-head">
+          <div className="orders-h">Today's three orders</div>
+          <div className="orders-meta">Execute in order・complete by 22:00</div>
+        </div>
+        <div className="order-grid">
+          <div className="o-card primary">
+            <div className="o-num">01</div>
+            <div className="o-title">Walk + Mobility・30 min</div>
+            <div className="o-desc">Pre-lunch Z2 walk, then 10 min mobility flow. Target: parasympathetic activation, not sweating.</div>
+            <div className="o-foot"><span>Category・Recovery</span><span>›</span></div>
+          </div>
+          <div className="o-card">
+            <div className="o-num">02</div>
+            <div className="o-title">Defer Push Day</div>
+            <div className="o-desc">Bench + OHP postponed to Saturday. Today: light technique only — band pull-aparts, scap CARs.</div>
+            <div className="o-foot"><span>Category・Hold</span><span>›</span></div>
+          </div>
+          <div className="o-card">
+            <div className="o-num">03</div>
+            <div className="o-title">Recovery Nutrition・2,450 kcal</div>
+            <div className="o-desc">Protein floor 180g. Lights out 23:00, no screens after 22:30.</div>
+            <div className="o-foot"><span>Category・Fuel</span><span>›</span></div>
+          </div>
+        </div>
+      </div>
+
+      {/* THREE BAYS */}
+      <div className="bays">
+        <div className="bay training">
+          <div className="bay-num"><span className="swatch"></span>Bay 01・Training</div>
+          <div className="bay-h serif">Push volume <em>climbing</em>.</div>
+          <div className="bay-deck">
+            7-day volume: push +22%, legs −18%.
+            Bench + OHP keep winning the coin toss — time to rotate.
+          </div>
+          <div className="bay-chart">
+            {[14,18,22,16,24,28,17,20,26,22,24,29,18,16].map((h,i)=>(
+              <i key={i} style={{height:h*1.6+'px', opacity: i<7 ? 0.4 : 1}}/>
+            ))}
+          </div>
+          <div className="bay-stats">
+            <div><div className="bs-k">7d Sets</div><div className="bs-v">122<small> sets</small></div></div>
+            <div><div className="bs-k">PPL Ratio</div><div className="bs-v">52/30/18<small>%</small></div></div>
+            <div><div className="bs-k">MEV</div><div className="bs-v">2/3<small> hit</small></div></div>
+          </div>
+          <a className="bay-cta">
+            <div>
+              Enter Training Bay
+              <div className="bay-cta-sub" style={{fontSize:10, marginTop:2}}>Schedule a leg-priority week</div>
+            </div>
+            <span className="arrow">→</span>
+          </a>
+        </div>
+
+        <div className="bay recovery">
+          <div className="bay-num"><span className="swatch"></span>Bay 02・Recovery</div>
+          <div className="bay-h serif">Sleep is the <em>bottleneck</em>.</div>
+          <div className="bay-deck">
+            Last night: 6h22, deep 0h48 — third consecutive night below threshold.
+            HRV 48ms, resting HR drifting +4bpm. The body is running dry.
+          </div>
+          <div className="bay-chart">
+            {[7.4,6.8,7.1,6.0,5.9,6.4,6.3,6.6,6.0,5.8,6.4,6.5,6.2,6.4].map((h,i)=>(
+              <i key={i} style={{height:h*7+'px', opacity: i<7 ? 0.4 : 1}}/>
+            ))}
+          </div>
+          <div className="bay-stats">
+            <div><div className="bs-k">7d Avg</div><div className="bs-v">6h36<small></small></div></div>
+            <div><div className="bs-k">HRV</div><div className="bs-v">48<small>ms ↓6</small></div></div>
+            <div><div className="bs-k">RHR</div><div className="bs-v">58<small>bpm ↑4</small></div></div>
+          </div>
+          <a className="bay-cta">
+            <div>
+              Enter Recovery Bay
+              <div className="bay-cta-sub" style={{fontSize:10, marginTop:2}}>Lights out 23:00 tonight</div>
+            </div>
+            <span className="arrow">→</span>
+          </a>
+        </div>
+
+        <div className="bay body">
+          <div className="bay-num"><span className="swatch"></span>Bay 03・Body</div>
+          <div className="bay-h serif">Composition <em>holding</em>.</div>
+          <div className="bay-deck">
+            73.2kg・BF 16.4%・SM 35.1kg. Recomp staying on track —
+            fat down 0.6kg over 30 days, muscle held. Don't let noise derail the week.
+          </div>
+          <div className="bay-chart">
+            {[74.4,74.2,74.1,73.9,73.8,73.7,73.5,73.6,73.4,73.4,73.3,73.3,73.2,73.2].map((h,i)=>(
+              <i key={i} style={{height:(h-72)*30+'px', opacity: i<7 ? 0.4 : 1}}/>
+            ))}
+          </div>
+          <div className="bay-stats">
+            <div><div className="bs-k">Muscle</div><div className="bs-v">61.2<small>kg</small></div></div>
+            <div><div className="bs-k">BMR</div><div className="bs-v">1,612<small>kcal</small></div></div>
+            <div><div className="bs-k">30d</div><div className="bs-v">↓ 0.6<small>kg</small></div></div>
+          </div>
+          <a className="bay-cta">
+            <div>
+              Enter Body Bay
+              <div className="bay-cta-sub" style={{fontSize:10, marginTop:2}}>Protein floor 180g today</div>
+            </div>
+            <span className="arrow">→</span>
+          </a>
+        </div>
+      </div>
+
+      {/* RISK + PULSE BAND */}
+      <div className="band">
+        <div>
+          <div className="band-h"><span>Risk queue・things that could wreck this week</span><span>3 open</span></div>
+          <div className="risk-list">
+            <div className="risk-item">
+              <div className="risk-num hold serif">01</div>
+              <div>
+                <div className="risk-h">Under-recovered, 3-night slide.</div>
+                <div className="risk-d">3 of the last 4 nights had less than 1 hour of deep sleep. Forcing intensity today only deepens the deficit.</div>
+              </div>
+              <div className="risk-meta"><b>Hold</b>readiness ↓12<br/>next・lights out 23:00</div>
+            </div>
+            <div className="risk-item">
+              <div className="risk-num act serif">02</div>
+              <div>
+                <div className="risk-h">Push : Leg imbalance widening.</div>
+                <div className="risk-d">Push accounts for 52% of 7-day volume, legs just 18%. Last Friday logged patellar tracking drift.</div>
+              </div>
+              <div className="risk-meta"><b>Act</b>ppl-log・MEV<br/>next・leg-priority week</div>
+            </div>
+            <div className="risk-item">
+              <div className="risk-num watch serif">03</div>
+              <div>
+                <div className="risk-h">Resting HR drifting +4bpm.</div>
+                <div className="risk-d">Often a precursor to illness or under-recovery. Recheck 04-26; if it persists, go deeper with a deload.</div>
+              </div>
+              <div className="risk-meta"><b>Watch</b>garmin・7d trend<br/>next・recheck 04-26</div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div className="band-h"><span>Training pulse・last 28 days</span><span>push 14・pull 8・legs 4・rest 2</span></div>
+          <div className="pulse-28">
+            {(() => {
+              const seq = ['rest','push','pull','legs','push','pull','rest','push','push','pull','legs','push','pull','rest','push','push','pull','legs','push','pull','rest','push','push','pull','rest','push','legs','rest'];
+              return seq.map((t,i)=>(
+                <div key={i} className={`pc ${t} ${i===27?'today':''}`} title={t}/>
+              ));
+            })()}
+          </div>
+          <div className="pulse-axis">
+            <span>28d ago</span>
+            <span>21d</span>
+            <span>14d</span>
+            <span>7d</span>
+            <span>Today</span>
+          </div>
+          <div className="pulse-legend">
+            <span><span className="sw" style={{background:'var(--orange)'}}></span>Push</span>
+            <span><span className="sw" style={{background:'var(--green)'}}></span>Pull</span>
+            <span><span className="sw" style={{background:'var(--warm)'}}></span>Legs</span>
+            <span><span className="sw" style={{background:'rgba(26,24,20,.08)'}}></span>Rest</span>
+          </div>
+          <div className="pulse-totals">
+            <div><div className="pk">Sessions</div><div className="pv serif">26</div></div>
+            <div><div className="pk">Total sets</div><div className="pv serif">478</div></div>
+            <div><div className="pk">Daily avg</div><div className="pv serif">17.4</div></div>
+            <div><div className="pk">vs prev 28d</div><div className="pv serif" style={{color:'var(--orange)'}}>+22%</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div className="colophon">
+        <span><b>Data・</b>garmin connect・withings body+・ppl-log.csv</span>
+        <span><b>Generated・</b>2026-04-24 06:50 cst</span>
+        <span><b>Cockpit・</b>v2026.04・hermes/codex rendered</span>
+      </div>
+    </div>
+  );
+};
+
+ReactDOM.createRoot(document.getElementById('root')).render(<GymBold />);
+  </script>
+</body>
+</html>

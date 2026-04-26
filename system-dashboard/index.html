@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="utf-8"/>
+<title>Hermes System Dashboard — A・精煉駕駛艙</title>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin></script>
+<style>html, body { margin: 0; padding: 0; background: #0a1018; min-height: 100vh; }</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+// System Dashboard — Direction A (mission-strip cockpit)
+// Source: Claude Design bundle variants/system-refined.jsx
+// Converted to standalone HTML — 2026-04-26
+
+const SystemRefined = () => {
+  return (
+    <div className="sys-r">
+      <style>{`
+        .sys-r {
+          --bg: #0a1018;
+          --panel: #111c28;
+          --panel-2: #15212e;
+          --line: rgba(148,178,209,.12);
+          --line-2: rgba(148,178,209,.22);
+          --text: #e8f1f9;
+          --muted: #8aa0b6;
+          --dim: #5d7488;
+          --ok: #4fd29a;
+          --warn: #f4b860;
+          --danger: #ff6b7c;
+          --cyan: #5ed4ff;
+          --violet: #b39bff;
+          background: var(--bg); color: var(--text);
+          font-family: 'Inter', system-ui, sans-serif;
+          padding: 24px 28px 32px; min-height: 100%;
+        }
+        .sys-r * { box-sizing: border-box; }
+        .sys-r .topbar {
+          display: flex; justify-content: space-between; align-items: center;
+          padding-bottom: 14px; border-bottom: 1px solid var(--line);
+          margin-bottom: 18px;
+        }
+        .sys-r .brand { display: flex; gap: 12px; align-items: center; }
+        .sys-r .brand-mark {
+          width: 30px; height: 30px; border-radius: 7px;
+          border: 1px solid var(--line-2); display: grid; place-items: center;
+          color: var(--cyan); font-weight: 800; font-size: 12px;
+        }
+        .sys-r .brand-t { font-size: 12px; font-weight: 700; letter-spacing: .04em; }
+        .sys-r .brand-s { font-size: 10px; color: var(--muted); margin-top: 2px; }
+        .sys-r .topmeta { display: flex; gap: 22px; font-size: 11px; color: var(--muted); font-variant-numeric: tabular-nums; }
+        .sys-r .topmeta .live::before {
+          content: ''; display: inline-block; width: 6px; height: 6px; border-radius: 99px;
+          background: var(--ok); margin-right: 6px;
+          box-shadow: 0 0 0 3px rgba(79,210,154,.18);
+        }
+        .sys-r .mission {
+          display: grid; grid-template-columns: 1.1fr 1.4fr .9fr;
+          gap: 14px; margin-bottom: 18px; min-height: 460px;
+        }
+        .sys-r .ms-cell {
+          border: 1px solid var(--line-2); border-radius: 16px;
+          padding: 22px 24px; background: var(--panel);
+          display: flex; flex-direction: column;
+          position: relative; overflow: hidden;
+        }
+        .sys-r .ms-state {
+          background: radial-gradient(ellipse at 90% 0%, rgba(255,107,124,.20), transparent 60%),
+            linear-gradient(180deg, #1a1118 0%, #11131c 100%);
+          border-color: rgba(255,107,124,.28);
+        }
+        .sys-r .ms-tag {
+          display: inline-flex; align-items: center; gap: 8px;
+          font-size: 10px; font-weight: 800; letter-spacing: .14em;
+          text-transform: uppercase; color: var(--muted);
+        }
+        .sys-r .ms-tag.danger { color: #ffb3bd; }
+        .sys-r .ms-tag .dot {
+          width: 8px; height: 8px; border-radius: 99px; background: var(--danger);
+          box-shadow: 0 0 8px var(--danger);
+          animation: blink 1.4s ease-in-out infinite;
+        }
+        @keyframes blink { 50% { opacity: .35; } }
+        .sys-r .ms-h {
+          font-size: 56px; font-weight: 900; letter-spacing: -.04em;
+          line-height: .95; margin: 14px 0 10px; color: var(--danger);
+        }
+        .sys-r .ms-state-sub { font-size: 14px; line-height: 1.55; color: #d8e4ef; margin-bottom: auto; }
+        .sys-r .ms-state-sub b { color: var(--text); }
+        .sys-r .ms-pillars {
+          margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--line);
+          display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+        }
+        .sys-r .ms-pill .k { font-size: 9px; color: var(--dim); letter-spacing: .14em; text-transform: uppercase; font-weight: 700; }
+        .sys-r .ms-pill .v { font-size: 22px; font-weight: 800; letter-spacing: -.02em; margin-top: 4px; font-variant-numeric: tabular-nums; }
+        .sys-r .ms-pill .v.bad { color: var(--danger); }
+        .sys-r .ms-pill .v.ok { color: var(--ok); }
+        .sys-r .ms-pill .s { font-size: 11px; color: var(--muted); margin-top: 2px; }
+        .sys-r .ms-queue { background: linear-gradient(180deg, #131a26 0%, #0e1620 100%); }
+        .sys-r .ms-queue-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 14px; }
+        .sys-r .ms-queue-h { font-size: 11px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--warn); }
+        .sys-r .ms-queue-meta { font-size: 10px; color: var(--muted); letter-spacing: .08em; }
+        .sys-r .qrow {
+          display: grid; grid-template-columns: 38px 1fr 96px;
+          gap: 12px; padding: 12px 0; border-top: 1px solid var(--line); align-items: center;
+        }
+        .sys-r .qrow:first-of-type { border-top: 1px dashed var(--line-2); }
+        .sys-r .qpri {
+          display: inline-block; padding: 4px 0; border-radius: 5px;
+          font-size: 10px; font-weight: 800; letter-spacing: .08em; text-align: center;
+        }
+        .sys-r .qpri.p1 { background: rgba(255,107,124,.18); color: #ffb3bd; border: 1px solid rgba(255,107,124,.38); }
+        .sys-r .qpri.p2 { background: rgba(244,184,96,.16); color: #fad59a; border: 1px solid rgba(244,184,96,.38); }
+        .sys-r .qtitle { font-size: 14px; font-weight: 700; letter-spacing: -.005em; line-height: 1.3; }
+        .sys-r .qdesc { font-size: 11.5px; color: var(--muted); margin-top: 4px; line-height: 1.5; }
+        .sys-r .qowner { display: flex; align-items: center; gap: 6px; margin-top: 6px; font-size: 10px; color: var(--cyan); letter-spacing: .04em; }
+        .sys-r .qowner .av {
+          width: 16px; height: 16px; border-radius: 4px; object-fit: cover;
+          background: var(--panel-2); border: 1px solid var(--line-2);
+          font-size: 8px; display: grid; place-items: center; color: var(--cyan);
+        }
+        .sys-r .qowner img.av { padding: 0; }
+        .sys-r .qnext { font-size: 10px; color: #c2d3e3; text-align: right; font-family: 'JetBrains Mono', ui-monospace, monospace; line-height: 1.5; }
+        .sys-r .qnext b { color: var(--cyan); display: block; }
+        .sys-r .ms-oauth {
+          background: radial-gradient(ellipse at 50% 0%, rgba(244,184,96,.18), transparent 65%),
+            linear-gradient(180deg, #1a160f 0%, #0e1218 100%);
+          border-color: rgba(244,184,96,.28);
+          align-items: center; text-align: center;
+        }
+        .sys-r .ms-oauth .ms-tag { color: #fad59a; align-self: flex-start; }
+        .sys-r .ms-oauth .ms-tag .dot { background: var(--warn); box-shadow: 0 0 8px var(--warn); }
+        .sys-r .countdown {
+          font-size: 132px; font-weight: 900; line-height: .9;
+          letter-spacing: -.06em; color: var(--warn);
+          margin: 18px 0 4px; font-variant-numeric: tabular-nums;
+        }
+        .sys-r .countdown small { font-size: 22px; color: var(--muted); font-weight: 700; margin-left: 4px; letter-spacing: 0; }
+        .sys-r .oauth-when { font-size: 13px; color: #d8e4ef; line-height: 1.5; margin-bottom: 12px; }
+        .sys-r .oauth-when b { color: var(--text); }
+        .sys-r .oauth-bar { width: 100%; height: 6px; border-radius: 3px; background: rgba(255,255,255,.06); overflow: hidden; margin-bottom: 14px; }
+        .sys-r .oauth-bar > i { display: block; height: 100%; width: 18%; background: var(--warn); border-radius: 3px; }
+        .sys-r .oauth-act {
+          margin-top: auto; display: inline-flex; align-items: center; gap: 8px;
+          padding: 10px 14px; border-radius: 9px;
+          background: var(--warn); color: #1a160f;
+          font-size: 12px; font-weight: 800; letter-spacing: .04em;
+          align-self: stretch; justify-content: center; text-decoration: none; cursor: pointer;
+        }
+        .sys-r .rail { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-bottom: 22px; }
+        .sys-r .rail-card { padding: 12px 14px; background: var(--panel); border: 1px solid var(--line); border-radius: 11px; display: flex; flex-direction: column; gap: 4px; }
+        .sys-r .rail-l { font-size: 10px; color: var(--muted); letter-spacing: .12em; text-transform: uppercase; font-weight: 700; }
+        .sys-r .rail-v { font-size: 24px; font-weight: 800; letter-spacing: -.02em; font-variant-numeric: tabular-nums; line-height: 1; margin-top: 2px; }
+        .sys-r .rail-v.ok { color: var(--ok); }
+        .sys-r .rail-v.bad { color: var(--danger); }
+        .sys-r .rail-v.warn { color: var(--warn); }
+        .sys-r .rail-s { font-size: 10.5px; color: var(--muted); line-height: 1.4; }
+        .sys-r .section { margin-bottom: 22px; }
+        .sys-r .sh { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 12px; }
+        .sys-r .sh-t { font-size: 12px; font-weight: 700; letter-spacing: .04em; display: flex; gap: 8px; align-items: baseline; }
+        .sys-r .sh-t .c { font-size: 10px; color: var(--muted); font-weight: 500; }
+        .sys-r .sh-m { font-size: 10px; color: var(--dim); letter-spacing: .04em; }
+        .sys-r .two-col { display: grid; grid-template-columns: 1fr 1.2fr; gap: 14px; margin-bottom: 22px; }
+        .sys-r .panel { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; }
+        .sys-r .op { display: flex; gap: 14px; align-items: center; padding-bottom: 14px; border-bottom: 1px solid var(--line); margin-bottom: 12px; }
+        .sys-r .op-av { width: 48px; height: 48px; border-radius: 12px; object-fit: cover; border: 1px solid var(--line-2); flex: 0 0 48px; }
+        .sys-r .op-n { font-size: 14px; font-weight: 700; }
+        .sys-r .op-r { font-size: 11px; color: var(--muted); margin-top: 2px; }
+        .sys-r .op-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .sys-r .op-grid .k { font-size: 9px; color: var(--dim); letter-spacing: .12em; text-transform: uppercase; }
+        .sys-r .op-grid .v { font-size: 12px; font-weight: 700; margin-top: 3px; font-variant-numeric: tabular-nums; }
+        .sys-r .op-grid .v.code { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 10px; color: var(--cyan); word-break: break-all; }
+        .sys-r .lane-tabs { display: flex; gap: 3px; padding: 3px; background: rgba(255,255,255,.03); border-radius: 9px; border: 1px solid var(--line); margin-bottom: 12px; }
+        .sys-r .lt { flex: 1; text-align: center; padding: 6px 8px; border-radius: 6px; font-size: 11px; font-weight: 600; color: var(--muted); }
+        .sys-r .lt.on { background: var(--panel-2); color: var(--text); }
+        .sys-r .lt .n { display: inline-block; margin-left: 5px; font-size: 9px; padding: 1px 4px; border-radius: 3px; background: rgba(148,178,209,.1); }
+        .sys-r .lane-list { display: flex; flex-direction: column; gap: 8px; }
+        .sys-r .li { display: grid; grid-template-columns: 28px 1fr auto; gap: 10px; align-items: center; padding: 9px 10px; border: 1px solid var(--line); border-radius: 9px; background: rgba(255,255,255,.02); }
+        .sys-r .li-ic { width: 28px; height: 28px; border-radius: 7px; background: var(--panel-2); border: 1px solid var(--line-2); display: grid; place-items: center; color: var(--cyan); overflow: hidden; }
+        .sys-r .li-ic img { width: 100%; height: 100%; object-fit: cover; }
+        .sys-r .li-ic svg { width: 14px; height: 14px; }
+        .sys-r .li-n { font-size: 12px; font-weight: 600; }
+        .sys-r .li-s { font-size: 10.5px; color: var(--muted); margin-top: 2px; }
+        .sys-r .pill { font-size: 9px; font-weight: 700; padding: 3px 7px; border-radius: 99px; letter-spacing: .06em; text-transform: uppercase; }
+        .sys-r .pill.ready { background: rgba(79,210,154,.12); color: #a4ebc6; }
+        .sys-r .pill.active { background: rgba(94,212,255,.12); color: #a8e5ff; }
+        .sys-r .pill.building { background: rgba(244,184,96,.14); color: #fad59a; }
+        .sys-r .pill.support { background: rgba(179,155,255,.14); color: #d8caff; }
+        .sys-r .fleet-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .sys-r .fc { padding: 11px 12px; border: 1px solid var(--line); border-radius: 10px; background: rgba(255,255,255,.02); }
+        .sys-r .fc-h { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+        .sys-r .fc-av { width: 24px; height: 24px; border-radius: 6px; background: var(--panel-2); border: 1px solid var(--line-2); flex: 0 0 24px; display: grid; place-items: center; overflow: hidden; color: var(--cyan); }
+        .sys-r .fc-av img { width: 100%; height: 100%; object-fit: cover; }
+        .sys-r .fc-av svg { width: 12px; height: 12px; }
+        .sys-r .fc-n { font-size: 12px; font-weight: 700; }
+        .sys-r .fc-r { font-size: 10.5px; color: var(--muted); line-height: 1.45; margin-bottom: 6px; }
+        .sys-r .fc-foot { display: flex; align-items: center; justify-content: space-between; font-size: 9px; color: var(--dim); letter-spacing: .04em; }
+        .sys-r .pulse { display: inline-flex; align-items: end; gap: 2px; height: 10px; }
+        .sys-r .pulse i { width: 2px; background: var(--ok); border-radius: 2px; opacity: .55; }
+        .sys-r .tel { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 22px; }
+        .sys-r .tc { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; }
+        .sys-r .tc-l { font-size: 9px; color: var(--muted); letter-spacing: .12em; text-transform: uppercase; }
+        .sys-r .tc-row { display: flex; align-items: baseline; gap: 5px; margin: 6px 0 4px; }
+        .sys-r .tc-v { font-size: 18px; font-weight: 800; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+        .sys-r .tc-u { font-size: 10px; color: var(--muted); }
+        .sys-r .tc-spark { height: 18px; margin-top: 4px; display: flex; align-items: end; gap: 2px; }
+        .sys-r .tc-spark i { flex: 1; background: var(--cyan); border-radius: 1px; opacity: .55; }
+        .sys-r .tc-foot { font-size: 10px; color: var(--muted); line-height: 1.4; margin-top: 6px; }
+        .sys-r .out { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 4px 0; }
+        .sys-r .or { display: grid; grid-template-columns: 26px 100px 1fr 92px; gap: 12px; align-items: center; padding: 10px 16px; border-top: 1px solid var(--line); font-size: 12px; }
+        .sys-r .or:first-child { border-top: none; }
+        .sys-r .o-ic { width: 24px; height: 24px; border-radius: 7px; background: var(--panel-2); border: 1px solid var(--line-2); display: grid; place-items: center; color: var(--cyan); }
+        .sys-r .o-ic svg { width: 12px; height: 12px; }
+        .sys-r .o-sh { font-size: 11px; font-weight: 700; }
+        .sys-r .o-sh .src { display: block; font-size: 9px; color: var(--muted); margin-top: 2px; font-weight: 500; }
+        .sys-r .o-msg { font-size: 11.5px; color: #c2d3e3; line-height: 1.45; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; }
+        .sys-r .o-ts { font-size: 10px; color: var(--dim); text-align: right; font-variant-numeric: tabular-nums; font-family: 'JetBrains Mono', ui-monospace, monospace; }
+        .sys-r .footer { margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--line); font-size: 10px; color: var(--muted); font-family: 'JetBrains Mono', ui-monospace, monospace; line-height: 1.7; display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+        .sys-r .footer .k { color: var(--dim); display: inline-block; min-width: 96px; text-transform: uppercase; letter-spacing: .04em; font-family: 'Inter', sans-serif; font-size: 9px; }
+        .sys-r .footer code { color: var(--cyan); word-break: break-all; }
+      `}</style>
+
+      <div className="topbar">
+        <div className="brand">
+          <div className="brand-mark">H</div>
+          <div>
+            <div className="brand-t">HERMES SYSTEM DASHBOARD</div>
+            <div className="brand-s">operator cockpit · v2026.04 · mission-strip</div>
+          </div>
+        </div>
+        <div className="topmeta">
+          <span className="live">LIVE · 2026-04-24 03:00</span>
+          <span>tailscale 100.83.106.59</span>
+        </div>
+      </div>
+
+      <div className="mission">
+        <div className="ms-cell ms-state">
+          <span className="ms-tag danger"><span className="dot"></span>OVERALL STATE</span>
+          <div className="ms-h">DEGRADED</div>
+          <div className="ms-state-sub">
+            Services 9/9. Not a service-down event.
+            <b> Release truth is bleeding</b> from 80 dirty trees and the brain is on a 5-day countdown.
+          </div>
+          <div className="ms-pillars">
+            <div className="ms-pill"><div className="k">Dirty trees</div><div className="v bad">80</div><div className="s">45 local + 35 docs</div></div>
+            <div className="ms-pill"><div className="k">Services</div><div className="v ok">9/9</div><div className="s">core all online</div></div>
+          </div>
+        </div>
+
+        <div className="ms-cell ms-queue">
+          <div className="ms-queue-head">
+            <div className="ms-queue-h">⚠ Intervention queue · act first</div>
+            <div className="ms-queue-meta">3 OPEN</div>
+          </div>
+          <div className="qrow">
+            <span className="qpri p1">P1</span>
+            <div>
+              <div className="qtitle">Drain Git dirty across release surfaces</div>
+              <div className="qdesc">45 local + 35 system-docs = 80. Dashboard truth stays unreliable until this lands.</div>
+              <div className="qowner"><img className="av" src="assets/hermes-avatar.jpg" alt="Hermes" /><span>HERMES · GOVERNANCE</span></div>
+            </div>
+            <div className="qnext">NEXT<b>clean+classify</b></div>
+          </div>
+          <div className="qrow">
+            <span className="qpri p2">P2</span>
+            <div>
+              <div className="qtitle">Refresh Codex OAuth ahead of expiry</div>
+              <div className="qdesc">Core execution chain expires 2026-04-29. Don't let the brain time-out mid-shift.</div>
+              <div className="qowner"><span className="av">CX</span><span>CODEX LANE</span></div>
+            </div>
+            <div className="qnext">NEXT<b>refresh-path</b></div>
+          </div>
+          <div className="qrow">
+            <span className="qpri p2">P2</span>
+            <div>
+              <div className="qtitle">Promote live observability to first-class objects</div>
+              <div className="qdesc">GBrain freshness · Vertex fallback · failure panel — make them surfaces, not paragraphs.</div>
+              <div className="qowner"><span className="av">VX</span><span>BRAIN + VERTEX</span></div>
+            </div>
+            <div className="qnext">NEXT<b>expose-panels</b></div>
+          </div>
+        </div>
+
+        <div className="ms-cell ms-oauth">
+          <span className="ms-tag"><span className="dot"></span>BRAIN CONTINUITY · CODEX OAUTH</span>
+          <div className="countdown">5<small>d</small></div>
+          <div className="oauth-when">expires <b>2026-04-29</b><br/>refresh path overdue</div>
+          <div className="oauth-bar"><i></i></div>
+          <a className="oauth-act">↻ START REFRESH PATH</a>
+        </div>
+      </div>
+
+      <div className="rail">
+        <div className="rail-card"><div className="rail-l">Services online</div><div className="rail-v ok">9/9</div><div className="rail-s">openclaw · ssh · samba · webdav · docker · code-server</div></div>
+        <div className="rail-card"><div className="rail-l">Dirty trees</div><div className="rail-v bad">80</div><div className="rail-s">45 local · 35 docs · vault uncommitted</div></div>
+        <div className="rail-card"><div className="rail-l">Ready lines</div><div className="rail-v ok">3/3</div><div className="rail-s">Codex · GBrain · Vertex</div></div>
+        <div className="rail-card"><div className="rail-l">Storage</div><div className="rail-v">57%</div><div className="rail-s">disk normal · governance hygiene needed</div></div>
+        <div className="rail-card"><div className="rail-l">記憶層</div><div className="rail-v ok">穩定</div><div className="rail-s">可用性正常・版本收斂中</div></div>
+      </div>
+
+      <div className="two-col">
+        <div className="panel">
+          <div className="sh"><div className="sh-t">On watch</div><div className="sh-m">governance · live loop</div></div>
+          <div className="op">
+            <img className="op-av" src="assets/hermes-avatar.jpg" alt="Hermes" />
+            <div><div className="op-n">Hermes</div><div className="op-r">governance + orchestration control plane</div></div>
+          </div>
+          <div className="op-grid">
+            <div><div className="k">Snapshot</div><div className="v">2026-04-24 03:00</div></div>
+            <div><div className="k">Fleet</div><div className="v">6 shrimp · 4 active</div></div>
+            <div><div className="k">Last verify</div><div className="v" style={{color:'var(--ok)'}}>Codex print 2/2 ✓</div></div>
+            <div><div className="k">Render</div><div className="v">Hermes/Codex · Gemini ↗</div></div>
+            <div style={{gridColumn:'1/-1'}}><div className="k">Deploy target</div><div className="v code">/projects/system_dashboard_Vertex</div></div>
+          </div>
+        </div>
+        <div className="panel">
+          <div className="sh"><div className="sh-t">Operator lanes <span className="c">3 active · 3 ready · 3 to intervene</span></div><div className="sh-m">ready / active / intervene</div></div>
+          <div className="lane-tabs">
+            <div className="lt on">Active <span className="n">3</span></div>
+            <div className="lt">Ready <span className="n">3</span></div>
+            <div className="lt">Intervene <span className="n">3</span></div>
+          </div>
+          <div className="lane-list">
+            <div className="li">
+              <div className="li-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2v20M2 12h20M7 7l10 10M17 7l-10 10"/></svg></div>
+              <div><div className="li-n">A小蝦 runtime</div><div className="li-s">first-line interactive · auto-restart · session loop</div></div>
+              <span className="pill active">active</span>
+            </div>
+            <div className="li">
+              <div className="li-ic"><img src="assets/hermes-avatar.jpg" alt="Hermes" /></div>
+              <div><div className="li-n">Hermes 治理</div><div className="li-s">技能審視・記憶維護・brain-first</div></div>
+              <span className="pill active">在跑</span>
+            </div>
+            <div className="li">
+              <div className="li-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 20V10M8 20V6M12 20V14M16 20V8M20 20V12"/></svg></div>
+              <div><div className="li-n">發財蝦 chart lane</div><div className="li-s">premarket OK · image/chart worker building</div></div>
+              <span className="pill building">building</span>
+            </div>
+            <div className="li">
+              <div className="li-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="6" y="6" width="12" height="12" rx="1"/><path d="M12 9v6M9 12h6"/></svg></div>
+              <div><div className="li-n">健康蝦 — Garmin daily brief</div><div className="li-s">last run 08:01 · "recovery low"</div></div>
+              <span className="pill ready">ready</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="section">
+        <div className="sh"><div className="sh-t">Fleet ops <span className="c">6 shrimp</span></div><div className="sh-m">roles · pulse</div></div>
+        <div className="panel">
+          <div className="fleet-grid">
+            <div className="fc"><div className="fc-h"><div className="fc-av"><img src="assets/hermes-avatar.jpg" alt="Hermes" /></div><div className="fc-n">Hermes</div><span className="pill active" style={{marginLeft:'auto'}}>在跑</span></div><div className="fc-r">治理／編排控制平面</div><div className="fc-foot"><span>治理迴圈・即時</span><div className="pulse">{[6,8,5,9,7,9,6,8].map((h,i)=><i key={i} style={{height:h+'px'}}/>)}</div></div></div>
+            <div className="fc"><div className="fc-h"><div className="fc-av"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2v20M2 12h20M7 7l10 10M17 7l-10 10"/></svg></div><div className="fc-n">A小蝦</div><span className="pill active" style={{marginLeft:'auto'}}>在跑</span></div><div className="fc-r">互動 runtime・dispatch ＋ 自動重啟</div><div className="fc-foot"><span>會話・即時</span><div className="pulse">{[7,4,9,6,8,5,9,7].map((h,i)=><i key={i} style={{height:h+'px'}}/>)}</div></div></div>
+            <div className="fc"><div className="fc-h"><div className="fc-av"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="6" y="6" width="12" height="12" rx="1"/><path d="M12 9v6M9 12h6"/></svg></div><div className="fc-n">健康蝦</div><span className="pill ready" style={{marginLeft:'auto'}}>正常</span></div><div className="fc-r">健康解讀・Garmin 簡報</div><div className="fc-foot"><span>最近・08:01</span><div className="pulse">{[3,5,4,6,4,5,3,4].map((h,i)=><i key={i} style={{height:h+'px',background:'var(--ok)'}}/>)}</div></div></div>
+            <div className="fc"><div className="fc-h"><div className="fc-av"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 20V10M8 20V6M12 20V14M16 20V8M20 20V12"/></svg></div><div className="fc-n">發財蝦</div><span className="pill building" style={{marginLeft:'auto'}}>建置中</span></div><div className="fc-r">市場＋圖表生成線</div><div className="fc-foot"><span>焦點・圖表</span><div className="pulse">{[5,3,6,4,7,5,6,4].map((h,i)=><i key={i} style={{height:h+'px',background:'var(--warn)'}}/>)}</div></div></div>
+            <div className="fc"><div className="fc-h"><div className="fc-av"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="8"/></svg></div><div className="fc-n">知識蝦</div><span className="pill ready" style={{marginLeft:'auto'}}>正常</span></div><div className="fc-r">反思＋知識・brain-first</div><div className="fc-foot"><span>下一步・每日反思</span><div className="pulse">{[4,5,3,5,4,5,4,3].map((h,i)=><i key={i} style={{height:h+'px',background:'var(--ok)'}}/>)}</div></div></div>
+            <div className="fc"><div className="fc-h"><div className="fc-av"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 10.5 12 3l9 7.5"/><path d="M5.25 9.75V21h13.5V9.75"/><path d="M9 21v-6h6v6"/></svg></div><div className="fc-n">家務蝦</div><span className="pill support" style={{marginLeft:'auto'}}>支援</span></div><div className="fc-r">家務路由・vault-housekeeping</div><div className="fc-foot"><span>焦點・路由</span><div className="pulse">{[4,4,5,4,5,4,4,5].map((h,i)=><i key={i} style={{height:h+'px',background:'var(--violet)'}}/>)}</div></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div className="section">
+        <div className="sh"><div className="sh-t">系統遙測 <span className="c">快照 03:00</span></div><div className="sh-m">核心・健康・網路・記憶</div></div>
+        <div className="tel">
+          <div className="tc"><div className="tc-l">服務</div><div className="tc-row"><div className="tc-v">9/9</div><div className="tc-u">上線</div></div><div className="tc-spark">{[7,7,7,7,7,7,7,7,7,7,7,7].map((h,i)=><i key={i} style={{height:'100%',background:'var(--ok)'}}/>)}</div><div className="tc-foot">核心不是問題——治理清潔才是。</div></div>
+          <div className="tc"><div className="tc-l">儲存</div><div className="tc-row"><div className="tc-v">57</div><div className="tc-u">% 已用</div></div><div className="tc-spark">{[14,15,15,16,17,17,18,18,19,19,20,20].map((h,i)=><i key={i} style={{height:h+'px'}}/>)}</div><div className="tc-foot">磁碟正常；dirty trees 才讓狀態 degraded。</div></div>
+          <div className="tc"><div className="tc-l">網路</div><div className="tc-row"><div className="tc-v">OK</div><div className="tc-u">tailscale</div></div><div className="tc-spark">{[12,15,11,18,14,16,13,15,12,17,15,14].map((h,i)=><i key={i} style={{height:h+'px',background:'var(--cyan)'}}/>)}</div><div className="tc-foot"><code style={{color:'var(--cyan)',fontFamily:'JetBrains Mono, monospace',fontSize:10}}>100.83.106.59</code>・webhook-proxy 即時</div></div>
+          <div className="tc"><div className="tc-l">記憶層</div><div className="tc-row"><div className="tc-v">穩定</div><div className="tc-u"></div></div><div className="tc-spark">{[10,11,10,12,11,11,12,11,11,12,11,12].map((h,i)=><i key={i} style={{height:h+'px',background:'var(--violet)'}}/>)}</div><div className="tc-foot">可用性正常；版本收斂中。</div></div>
+        </div>
+      </div>
+
+      <div className="section">
+        <div className="sh"><div className="sh-t">蝦兵團最新產出 <span className="c">最新 5 筆</span></div><div className="sh-m">stream・近 19h</div></div>
+        <div className="out">
+          <div className="or"><div className="o-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 10.5 12 3l9 7.5"/><path d="M5.25 9.75V21h13.5V9.75"/></svg></div><div className="o-sh">家務 <span className="src">vault-housekeeping</span></div><div className="o-msg">家務治理：今日 2｜每日 3｜每週 4｜每月 3；下一步：維持 inbox 主層整潔與正式稿路由。</div><div className="o-ts">04-24 16:14</div></div>
+          <div className="or"><div className="o-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="8"/></svg></div><div className="o-sh">知識 <span className="src">daily-reflection</span></div><div className="o-msg">🧠 知識蝦：MEMORY.md 不存在，先依已載入的 workspace 記憶整理出今日收工反思提示。</div><div className="o-ts">04-24 14:00</div></div>
+          <div className="or"><div className="o-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="6" y="6" width="12" height="12" rx="1"/><path d="M12 9v6M9 12h6"/></svg></div><div className="o-sh">健康 <span className="src">garmin-daily-brief</span></div><div className="o-msg">🏃 健康蝦：今天主結論「恢復不足，不建議硬上高強度」。最近一筆 Garmin readiness 偏低。</div><div className="o-ts">04-24 08:01</div></div>
+          <div className="or"><div className="o-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 20V10M8 20V6M12 20V14M16 20V8M20 20V12"/></svg></div><div className="o-sh">財報 <span className="src">premarket-brief</span></div><div className="o-msg">💰 發財蝦盤前戰報 04-24 00:30 — 一句話定性：台股今天偏向「指數先守 keylevel」。</div><div className="o-ts">04-24 00:31</div></div>
+          <div className="or"><div className="o-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 10.5 12 3l9 7.5"/><path d="M5.25 9.75V21h13.5V9.75"/></svg></div><div className="o-sh">家務 <span className="src">vault-housekeeping</span></div><div className="o-msg">家務治理：每日 3｜每週 4｜每月 3。下一步維持 inbox 整潔。</div><div className="o-ts">04-23 21:26</div></div>
+        </div>
+      </div>
+
+      <div className="footer">
+        <div>
+          <div><span className="k">主檔</span> <code>/projects/system_dashboard_Vertex/index.html</code></div>
+          <div><span className="k">頭像</span> <code>assets/hermes-avatar.jpg</code></div>
+        </div>
+        <div>
+          <div><span className="k">驗證</span> Codex local print-mode 2/2 ✓</div>
+          <div><span className="k">產生時間</span> 2026-04-24 19:32:08</div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+ReactDOM.createRoot(document.getElementById('root')).render(<SystemRefined />);
+</script>
+</body>
+</html>

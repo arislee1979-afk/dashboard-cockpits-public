@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard Cockpits Public</title>
+  <style>
+    body{margin:0;font-family:Inter,system-ui,sans-serif;background:#0b1220;color:#eef2ff}
+    .wrap{max-width:1100px;margin:0 auto;padding:48px 24px 64px}
+    h1{font-size:44px;line-height:1;margin:0 0 16px}
+    p{color:#b7c0d8;line-height:1.7}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;margin-top:32px}
+    .card{border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:24px;background:rgba(255,255,255,.04)}
+    .tag{display:inline-block;padding:6px 10px;border-radius:999px;background:#1f2b46;color:#9fd7ff;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+    a{color:#8ad2ff;text-decoration:none}
+    a:hover{text-decoration:underline}
+    ul{color:#c8d0e7;line-height:1.7;padding-left:18px}
+    code{color:#ffd88a}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <span class="tag">Published 2026-04-26</span>
+    <h1>Dashboard Cockpits Public</h1>
+    <p>Public snapshot of two dashboard redesigns produced through Claude Design handoff and Claude Code implementation. These are static reviewable builds; some live data bindings are still stubbed and documented in the notes folder.</p>
+    <div class="grid">
+      <div class="card">
+        <h2>System Dashboard</h2>
+        <p>Chosen variant: refined mission-strip cockpit focused on degraded state, queue, and OAuth countdown above the fold.</p>
+        <ul>
+          <li><a href="system-dashboard/index.html">Open chosen public build</a></li>
+          <li><a href="system-dashboard/alternatives/index-bold.html">Open bold alternative</a></li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2>Gym Dashboard</h2>
+        <p>Chosen variant: bold editorial cover in English, emphasizing today's order, mission cards, and long-form operator bays.</p>
+        <ul>
+          <li><a href="gym-dashboard/index.html">Open chosen public build</a></li>
+          <li><a href="gym-dashboard/alternatives/index-refined.html">Open refined alternative</a></li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2>Notes</h2>
+        <p>Implementation notes and publish handoff are included for traceability and rollback context.</p>
+        <ul>
+          <li><a href="notes/system-dashboard-IMPLEMENTATION_NOTES.md">System implementation notes</a></li>
+          <li><a href="notes/gym-dashboard-IMPLEMENTATION_NOTES.md">Gym implementation notes</a></li>
+          <li><a href="notes/CC-handoff-to-hermes-publish-dashboard-2026-04-26.md">CC → Hermes publish handoff</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
