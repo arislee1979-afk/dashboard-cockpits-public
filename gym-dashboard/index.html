@@ -411,29 +411,29 @@ const GymBold = () => {
 
       {/* MASTHEAD */}
       <div className="mast">
-        <div className="mast-l">2026・04・24・FRI</div>
+        <div className="mast-l">2026・04・21</div>
         <div className="mast-title">ARIS・DAILY <b>TRAINING</b> COCKPIT</div>
-        <div className="mast-r">CYCLE 17 / DAY 287・14-DAY STREAK</div>
+        <div className="mast-r">LAST TRAIN 2026-04-16・10D AGO</div>
       </div>
 
       {/* COVER */}
       <div className="cover">
         <div>
-          <div className="cover-tag">Today's order・Hold</div>
+          <div className="cover-tag">Today's order・Recover</div>
           <h1 className="cover-headline serif">
             Recover first.<br/>
             Don't <em>force it</em>.
           </h1>
           <p className="cover-deck">
-            Readiness at <b style={{color:'var(--ink)'}}>54</b>, 12 points
-            below the 7-day average. Last night: 6h22 sleep, 0h48 deep;
-            resting HR up 4 bpm. Your body is asking for a quiet day —
-            give it one, and tomorrow's window opens wider.
+            Readiness at <b style={color:'var(--ink)'}>71</b>, 2.5 points
+            above the 7-day average. Last tracked night: 3h48 sleep, 1h08 deep;
+            efficiency 97.4%. Your body is asking for a recover day —
+            honor it, and the next window opens wider.
           </p>
           <div className="cover-byline">
             <span><b>HERMES</b>・on watch</span>
-            <span><b>GARMIN</b>・synced 02:48</span>
-            <span><b>WITHINGS</b>・weigh-in 06:32</span>
+            <span><b>GARMIN</b>・synced 2026-04-21</span>
+            <span><b>WITHINGS</b>・weigh-in 2026-04-21</span>
             <span><b>VERIFIED</b>・2/2 ✓</span>
           </div>
         </div>
@@ -446,12 +446,12 @@ const GymBold = () => {
               <circle cx="40" cy="40" r="32" fill="none" stroke="var(--warm)" strokeWidth="8"
                 strokeDasharray={`${0.54*201} 201`} strokeLinecap="round"
                 transform="rotate(-90 40 40)"/>
-              <text x="40" y="45" textAnchor="middle" fontSize="20" fontWeight="900" fill="var(--bg)">54</text>
+              <text x="40" y="45" textAnchor="middle" fontSize="20" fontWeight="900" fill="var(--bg)">71</text>
             </svg>
             <div>
               <div className="g-label">Readiness</div>
-              <div className="g-value serif">54<small> / 100</small></div>
-              <div className="g-delta bad">↓ 12 (7-day avg)・under-recovered</div>
+              <div className="g-value serif">71<small> / 100</small></div>
+              <div className="g-delta good">↑ 2.5 (7-day avg)・stable</div>
             </div>
           </div>
           <div className="gauge">
@@ -464,8 +464,8 @@ const GymBold = () => {
             </svg>
             <div>
               <div className="g-label">Recovery・Sleep + HRV</div>
-              <div className="g-value serif">6h22<small>・HRV 48</small></div>
-              <div className="g-delta bad">Deep 0h48・3 nights running low</div>
+              <div className="g-value serif">3h48<small>・score 71.3</small></div>
+              <div className="g-delta bad">Deep 1h08・debt 192 min</div>
             </div>
           </div>
           <div className="gauge">
@@ -474,12 +474,12 @@ const GymBold = () => {
               <circle cx="40" cy="40" r="32" fill="none" stroke="var(--green)" strokeWidth="8"
                 strokeDasharray={`${0.86*201} 201`} strokeLinecap="round"
                 transform="rotate(-90 40 40)"/>
-              <text x="40" y="45" textAnchor="middle" fontSize="16" fontWeight="900" fill="var(--ink)">73.2</text>
+              <text x="40" y="45" textAnchor="middle" fontSize="16" fontWeight="900" fill="var(--ink)">67.8</text>
             </svg>
             <div>
               <div className="g-label">Body・Weight + Composition</div>
-              <div className="g-value serif">73.2<small> kg・BF 16.4%</small></div>
-              <div className="g-delta good">30-day ↓ 0.6kg・muscle held</div>
+              <div className="g-value serif">67.8<small> kg・BF 17.5%</small></div>
+              <div className="g-delta good">lean 55.9kg・muscle held</div>
             </div>
           </div>
         </div>
@@ -489,7 +489,7 @@ const GymBold = () => {
       <div className="orders">
         <div className="orders-head">
           <div className="orders-h">Today's three orders</div>
-          <div className="orders-meta">Execute in order・complete by 22:00</div>
+          <div className="orders-meta">Last refresh 2026-04-26 17:27・complete by 22:00</div>
         </div>
         <div className="order-grid">
           <div className="o-card primary">
@@ -545,7 +545,7 @@ const GymBold = () => {
           <div className="bay-num"><span className="swatch"></span>Bay 02・Recovery</div>
           <div className="bay-h serif">Sleep is the <em>bottleneck</em>.</div>
           <div className="bay-deck">
-            Last night: 6h22, deep 0h48 — third consecutive night below threshold.
+            Last tracked night: 3h48, deep 1h08 — debt 192 minutes.
             HRV 48ms, resting HR drifting +4bpm. The body is running dry.
           </div>
           <div className="bay-chart">
@@ -571,11 +571,11 @@ const GymBold = () => {
           <div className="bay-num"><span className="swatch"></span>Bay 03・Body</div>
           <div className="bay-h serif">Composition <em>holding</em>.</div>
           <div className="bay-deck">
-            73.2kg・BF 16.4%・SM 35.1kg. Recomp staying on track —
+            67.8kg・BF 17.5%・lean 55.9kg. Recomp staying on track —
             fat down 0.6kg over 30 days, muscle held. Don't let noise derail the week.
           </div>
           <div className="bay-chart">
-            {[74.4,74.2,74.1,73.9,73.8,73.7,73.5,73.6,73.4,73.4,73.3,73.3,73.2,73.2].map((h,i)=>(
+            {[68.5,68.3,68.1,67.9,67.8,67.7,67.6,67.5,67.4,67.3,67.5,67.6,67.7,67.8].map((h,i)=>(
               <i key={i} style={{height:(h-72)*30+'px', opacity: i<7 ? 0.4 : 1}}/>
             ))}
           </div>
